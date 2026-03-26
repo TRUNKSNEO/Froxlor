@@ -80,6 +80,7 @@ final class MasterCron extends CliCommand
 				Cronjob::inserttask(TaskId::CREATE_QUOTA);
 				Cronjob::inserttask(TaskId::REBUILD_CRON);
 				Cronjob::inserttask(TaskId::UPDATE_LE_SERVICES);
+				Cronjob::inserttask(TaskId::REBUILD_NSSUSERS);
 				$jobs[] = 'tasks';
 			}
 			define('CRON_IS_FORCED', 1);
@@ -96,7 +97,7 @@ final class MasterCron extends CliCommand
 		if ($input->getOption('run-task')) {
 			$tasks_to_run = $input->getOption('run-task');
 			foreach ($tasks_to_run as $ttr) {
-				if (in_array($ttr, [TaskId::REBUILD_VHOST, TaskId::REBUILD_DNS, TaskId::REBUILD_RSPAMD, TaskId::CREATE_QUOTA, TaskId::REBUILD_CRON])) {
+				if (in_array($ttr, [TaskId::REBUILD_VHOST, TaskId::REBUILD_DNS, TaskId::REBUILD_RSPAMD, TaskId::CREATE_QUOTA, TaskId::REBUILD_CRON, TaskId::UPDATE_LE_SERVICES, TaskId::REBUILD_NSSUSERS])) {
 					Cronjob::inserttask($ttr);
 					$jobs[] = 'tasks';
 				} else {
