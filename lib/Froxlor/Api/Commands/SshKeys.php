@@ -141,7 +141,7 @@ class SshKeys extends ApiCommand implements ResourceEntity
 
 		if (Settings::Get('system.nssextrausers') == 1) {
 			// this is used so that the libnss-extrausers cron is fired
-			Cronjob::inserttask(TaskId::CREATE_FTP);
+			Cronjob::inserttask(TaskId::REBUILD_NSSUSERS);
 		}
 
 		return $this->response($result);
@@ -275,7 +275,7 @@ class SshKeys extends ApiCommand implements ResourceEntity
 
 		if (Settings::Get('system.nssextrausers') == 1) {
 			// this is used so that the libnss-extrausers cron is fired
-			Cronjob::inserttask(TaskId::CREATE_FTP);
+			Cronjob::inserttask(TaskId::REBUILD_NSSUSERS);
 		}
 
 		return $this->response($result);
@@ -418,7 +418,7 @@ class SshKeys extends ApiCommand implements ResourceEntity
 
 		if (Settings::Get('system.nssextrausers') == 1) {
 			// this is used so that the libnss-extrausers cron is fired
-			Cronjob::inserttask(TaskId::CREATE_FTP);
+			Cronjob::inserttask(TaskId::REBUILD_NSSUSERS);
 		}
 
 		return $this->response($result);
