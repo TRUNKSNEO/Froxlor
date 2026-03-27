@@ -31,7 +31,6 @@ use Froxlor\Customer\Customer;
 use Froxlor\Database\Database;
 use Froxlor\Domain\Domain;
 use Froxlor\FileDir;
-use Froxlor\Froxlor;
 use Froxlor\FroxlorLogger;
 use Froxlor\Http\Directory;
 use Froxlor\Http\Statistics;
@@ -907,7 +906,21 @@ class Apache extends HttpConfigBase
 			$servernames_text .= $server_alias . "\n";
 		}
 
-		$servernames_text .= '  ServerAdmin ' . $domain['email'] . "\n";
+		switch (Settings::Get('system.webserver_serveradmin')) {
+			case 'customer':
+				$servernames_text .= '  ServerAdmin ' . $domain['email'] . "\n";
+				break;
+			case 'admin':
+				$servernames_text .= '  ServerAdmin ' . $domain['admin_email'] . "\n";
+				break;
+			case 'global':
+				$servernames_text .= '  ServerAdmin ' . Settings::Get('panel.adminmail') . "\n";
+				break;
+			case 'none':
+			default:
+				// empty
+		}
+
 		return $servernames_text;
 	}
 

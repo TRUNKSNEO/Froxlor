@@ -513,6 +513,13 @@ return [
 		'domain_duplicate' => 'Domain duplizieren',
 		'domain_duplicate_named' => '%s duplizieren',
 		'emaildomainwarning' => '<div id="emaildomainnote" class="invalid-feedback">ACHTUNG: Durch die Änderung dieser Einstellung löschen Sie alle bestehenden E-Mail-Adressen und -Konten unwiderruflich.</div>',
+		'webserver_serveradmin' => [
+			'setting' => 'ServerAdmin Angabe',
+			'customer' => 'Kunden E-Mail Adresse (standard)',
+			'admin' => 'Admin E-Mail Adresse',
+			'global' => 'Panel-Admin E-Mail Adresse',
+			'none' => 'Keine ServerAdmin Angabe'
+		]
 	],
 	'apikeys' => [
 		'no_api_keys' => 'Keine API Keys gefunden',

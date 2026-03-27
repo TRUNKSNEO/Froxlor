@@ -45,11 +45,13 @@ class WebserverBase
 				`d`.`phpsettingid`, `c`.`adminid`, `c`.`guid`, `c`.`email`,
 				`c`.`documentroot` AS `customerroot`, `c`.`deactivated` as `customer_deactivated`,
 				`c`.`phpenabled` AS `phpenabled_customer`,
-				`d`.`phpenabled` AS `phpenabled_vhost`
+				`d`.`phpenabled` AS `phpenabled_vhost`,
+				`a`.`email` as `admin_email`
 				FROM `" . TABLE_PANEL_DOMAINS . "` `d`
 
 				LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`)
 				LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`)
+				LEFT JOIN `" . TABLE_PANEL_ADMINS . "` `a` ON (`a`.`adminid` = `c`.`adminid`)
 
 				WHERE `d`.`aliasdomain` IS NULL AND `d`.`email_only` <> '1'
 				ORDER BY `d`.`parentdomainid` DESC, `d`.`iswildcarddomain`, `d`.`domain` ASC;

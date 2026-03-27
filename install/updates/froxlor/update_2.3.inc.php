@@ -194,3 +194,16 @@ if (Froxlor::isFroxlorVersion('2.3.4')) {
 	Update::showUpdateStep("Updating from 2.3.4 to 2.3.5", false);
 	Froxlor::updateToVersion('2.3.5');
 }
+
+if (Froxlor::isDatabaseVersion('202512280')) {
+
+	Update::showUpdateStep("Adding new settings");
+	$system_webserver_serveradmin = $_POST['system_webserver_serveradmin'] ?? 'customer';
+	if (!in_array($system_webserver_serveradmin, ['customer', 'admin', 'global', 'none'])) {
+		$system_webserver_serveradmin = 'customer';
+	}
+	Settings::AddNew("system.webserver_serveradmin", $system_webserver_serveradmin);
+	Update::lastStepStatus(0);
+
+	Froxlor::updateToDbVersion('202603100');
+}

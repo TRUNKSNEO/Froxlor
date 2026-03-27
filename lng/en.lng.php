@@ -527,6 +527,13 @@ return [
 			'backups' => 'Backups',
 		],
 		'emaildomainwarning' => '<div id="emaildomainnote" class="invalid-feedback">WARNING: By changing this setting you will delete all existing e-mail addresses and -accounts permanently.</div>',
+		'webserver_serveradmin' => [
+			'setting' => 'ServerAdmin directive value',
+			'customer' => 'Customer email address (default)',
+			'admin' => 'Admin email address',
+			'global' => 'Panel admin email address',
+			'none' => 'No ServerAdmin'
+		]
 	],
 	'apcuinfo' => [
 		'clearcache' => 'Clear APCu cache',

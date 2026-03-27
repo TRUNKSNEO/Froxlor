@@ -73,5 +73,26 @@ if (Update::versionInUpdate($current_db_version, '202509270')) {
 	];
 }
 
+if (Update::versionInUpdate($current_db_version, '202603100')) {
+
+	if (Settings::Get('system.webserver') == 'apache2') {
+		$has_preconfig = true;
+		$description = 'Select default value for the "ServerAdmin" value which is shown on webserver error pages (depending on ServerSignature setting).';
+		$question = '<strong>Which email address should be shown in ServerAdmin directive?</strong>&nbsp;';
+		$return['system_webserver_serveradmin'] = [
+			'type' => 'select',
+			'select_var' => [
+				'customer' => lng('admin.webserver_serveradmin.customer'),
+				'admin' => lng('admin.webserver_serveradmin.admin'),
+				'global' => lng('admin.webserver_serveradmin.global'),
+				'none' => lng('admin.webserver_serveradmin.none')
+			],
+			'selected' => 'apache2',
+			'label' => $question,
+			'prior_infotext' => $description
+		];
+	}
+}
+
 $preconfig['fields'] = $return;
 return $preconfig;

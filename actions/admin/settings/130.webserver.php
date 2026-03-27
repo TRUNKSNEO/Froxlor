@@ -435,7 +435,24 @@ return [
 					'default' => '1',
 					'option_options_method' => ['\\Froxlor\\Domain\\Domain', 'getRedirectCodes'],
 					'save_method' => 'storeSettingField'
-				]
+				],
+				'system_webserver_serveradmin' => [
+					'label' => lng('admin.webserver_serveradmin.setting'),
+					'settinggroup' => 'system',
+					'varname' => 'webserver_serveradmin',
+					'type' => 'select',
+					'default' => 'customer',
+					'select_var' => [
+						'customer' => lng('admin.webserver_serveradmin.customer'),
+						'admin' => lng('admin.webserver_serveradmin.admin'),
+						'global' => lng('admin.webserver_serveradmin.global'),
+						'none' => lng('admin.webserver_serveradmin.none')
+					],
+					'save_method' => 'storeSettingField',
+					'websrv_avail' => [
+						'apache2',
+					],
+				],
 			]
 		]
 	]
