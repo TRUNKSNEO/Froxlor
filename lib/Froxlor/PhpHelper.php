@@ -483,7 +483,9 @@ class PhpHelper
 						// special case for passwords (nowdoc)
 						$str .= self::tabPrefix($depth, "'{$key}' => <<<'EOT'\n{$value}\nEOT,\n");
 					} else {
-						$str .= self::tabPrefix($depth, "'{$key}' => '{$value}',\n");
+						// escape backslashes first, then single quotes:
+						$escaped = str_replace(['\\', "'"], ['\\\\', "\\'"], $value);
+						$str .= self::tabPrefix($depth, "'{$key}' => '{$escaped}',\n");
 					}
 				}
 			} else {

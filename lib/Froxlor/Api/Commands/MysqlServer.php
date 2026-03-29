@@ -29,6 +29,7 @@ use Exception;
 use Froxlor\Api\ApiCommand;
 use Froxlor\Api\ResourceEntity;
 use Froxlor\Database\Database;
+use Froxlor\FileDir;
 use Froxlor\Froxlor;
 use Froxlor\FroxlorLogger;
 use Froxlor\PhpHelper;
@@ -103,6 +104,8 @@ class MysqlServer extends ApiCommand implements ResourceEntity
 			}
 		}
 		$mysql_port = Validate::validate($mysql_port, 'port', Validate::REGEX_PORT, '', [3306], true);
+		$mysql_ca = !empty($mysql_ca) ? FileDir::makeCorrectFile($mysql_ca) : '';
+		$privileged_user = Validate::validate($privileged_user, 'privileged_user', '/^[a-z][a-z0-9\-_]+$/i', '', [], true);
 		$privileged_password = Validate::validate($privileged_password, 'password', '', '', [], true);
 		$description = Validate::validate(trim($description), 'description', Validate::REGEX_DESC_TEXT, '', [], true);
 
@@ -402,6 +405,8 @@ class MysqlServer extends ApiCommand implements ResourceEntity
 			}
 		}
 		$mysql_port = Validate::validate($mysql_port, 'port', Validate::REGEX_PORT, '', [3306], true);
+		$mysql_ca = !empty($mysql_ca) ? FileDir::makeCorrectFile($mysql_ca) : '';
+		$privileged_user = Validate::validate($privileged_user, 'privileged_user', '/^[a-z][a-z0-9\-_]+$/i', '', [], true);
 		$privileged_password = Validate::validate($privileged_password, 'password', '', '', [], true);
 		$description = Validate::validate(trim($description), 'description', Validate::REGEX_DESC_TEXT, '', [], true);
 
