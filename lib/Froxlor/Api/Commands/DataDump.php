@@ -85,7 +85,7 @@ class DataDump extends ApiCommand implements ResourceEntity
 		// validation
 		$path = FileDir::makeCorrectDir(Validate::validate($path, 'path', '', '', [], true));
 		$userpath = $path;
-		$path = FileDir::makeCorrectDir($customer['documentroot'] . '/' . $path);
+		$path = FileDir::makeCorrectDir($customer['documentroot'] . '/' . $path, $customer['documentroot']);
 
 		// path cannot be the customers docroot
 		if ($path == FileDir::makeCorrectDir($customer['documentroot'])) {

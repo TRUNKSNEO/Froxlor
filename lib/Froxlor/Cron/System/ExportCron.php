@@ -229,7 +229,11 @@ class ExportCron extends FroxlorCron
 			FileDir::safe_exec('rm -rf ' . escapeshellarg($tmpdir));
 			// set owner to customer
 			$cronlog->logAction(FroxlorLogger::CRON_ACTION, LOG_DEBUG, 'shell> chown -R ' . (int)$data['uid'] . ':' . (int)$data['gid'] . ' ' . escapeshellarg($data['destdir']));
-			FileDir::safe_exec('chown -R ' . (int)$data['uid'] . ':' . (int)$data['gid'] . ' ' . escapeshellarg($data['destdir']));
+			if (is_link(rtrim($data['destdir'], '/'))) {
+				$cronlog->logAction(FroxlorLogger::CRON_ACTION, LOG_ERR, 'Export destination is a symlink, skipping chown for security: ' . $data['destdir']);
+			} else {
+				FileDir::safe_exec('chown -R ' . (int)$data['uid'] . ':' . (int)$data['gid'] . ' ' . escapeshellarg($data['destdir']));
+			}
 		}
 	}
 }
