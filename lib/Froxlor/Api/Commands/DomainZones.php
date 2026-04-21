@@ -145,8 +145,6 @@ class DomainZones extends ApiCommand implements ResourceEntity
 			}
 		}
 
-		// TODO regex validate content for invalid characters
-
 		if ($ttl <= 0) {
 			$ttl = 18000;
 		}
@@ -155,6 +153,11 @@ class DomainZones extends ApiCommand implements ResourceEntity
 		if (empty($content)) {
 			$errors[] = lng('error.dns_content_empty');
 		}
+
+		// remove invalid control characters (allow tab + printable ASCII)
+		$content = preg_replace('/[^\x09\x20-\x7E]/', '', $content);
+		// collapse excessive whitespace
+		$content = preg_replace('/\s+/', ' ', $content);
 
 		if ($type != 'CNAME') {
 			// check whether there is a CNAME-record for the same resource

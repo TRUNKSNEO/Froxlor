@@ -82,12 +82,12 @@ if (Update::versionInUpdate($current_db_version, '202603100')) {
 		$return['system_webserver_serveradmin'] = [
 			'type' => 'select',
 			'select_var' => [
-				'customer' => lng('admin.webserver_serveradmin.customer'),
-				'admin' => lng('admin.webserver_serveradmin.admin'),
-				'global' => lng('admin.webserver_serveradmin.global'),
-				'none' => lng('admin.webserver_serveradmin.none')
+				'customer' => 'Customer email address (default)',
+				'admin' => 'Admin email address',
+				'global' => 'Panel admin email address',
+				'none' => 'No ServerAdmin'
 			],
-			'selected' => 'apache2',
+			'selected' => 'customer',
 			'label' => $question,
 			'prior_infotext' => $description
 		];

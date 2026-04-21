@@ -370,10 +370,12 @@ class FileDir
 	 * Function which returns a correct filename, means to add a slash at the beginning if there wasn't one
 	 *
 	 * @param string $filename the filename
+	 * @param string $fixed_homedir whether to check that the given file is within the fixed home-directory
 	 *
 	 * @return string the corrected filename
+	 * @throws Exception
 	 */
-	public static function makeCorrectFile(string $filename): string
+	public static function makeCorrectFile(string $filename, string $fixed_homedir = ""): string
 	{
 		if (trim($filename) == '') {
 			$error = 'Given filename for function ' . __FUNCTION__ . ' is empty.' . "\n";
@@ -387,6 +389,42 @@ class FileDir
 
 		if (substr($filename, 0, 1) != '/') {
 			$filename = '/' . $filename;
+		}
+
+		// if given, check that the target file is within the $fixed_homedir
+		// by checking each folder and the file for being a symlink and whether it targets
+		// the customers homedir or points outside of it
+		if (!empty($fixed_homedir)) {
+			$to_check = explode("/", substr($filename, strlen(self::makeCorrectDir($fixed_homedir))), -1);
+			$check_dir = substr($fixed_homedir, -1) == '/' ? substr($fixed_homedir, 0, -1) : $fixed_homedir;
+			// Symlink check
+			foreach ($to_check as $sub_dir) {
+				$check_dir .= '/' . $sub_dir;
+				if (is_link($check_dir)) {
+					$original_target = $check_dir;
+					$check_dir = readlink($check_dir);
+					$link_dir = dirname($original_target);
+					// check whether the link is relative or absolute
+					if (substr($check_dir, 0, 1) != '/') {
+						// relative directory, prepend link_dir
+						$check_dir = $link_dir . '/' . $check_dir;
+					}
+					if (substr($check_dir, 0, strlen($fixed_homedir)) != $fixed_homedir) {
+						throw new Exception("Found symlink pointing outside of customer home directory: " . substr($original_target, strlen($fixed_homedir)));
+					}
+				}
+			}
+			// check for the path to be within the given homedir
+			if (substr($filename, 0, strlen($fixed_homedir)) != $fixed_homedir) {
+				throw new Exception("Target path/file not within the required customer home directory");
+			}
+			// check whether file is symlink itself
+			if (is_link($filename)) {
+				$check_dir = readlink($check_dir);
+				if (substr($check_dir, 0, strlen($fixed_homedir)) != $fixed_homedir) {
+					throw new Exception("Found symlink pointing outside of customer home directory: " . substr($filename, strlen($fixed_homedir)));
+				}
+			}
 		}
 
 		return self::makeSecurePath($filename);

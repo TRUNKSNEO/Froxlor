@@ -390,18 +390,18 @@ class Validate
 	public static function validateDnsLoc(string $input)
 	{
 		$pattern = '/^
-        (\d{1,2})\s+                # latitude degrees
-        (\d{1,2})\s+                # latitude minutes
-        (\d{1,2}(?:\.\d+)?)\s+      # latitude seconds
-        ([NS])\s+                   # latitude direction
-        (\d{1,3})\s+                # longitude degrees
-        (\d{1,2})\s+                # longitude minutes
-        (\d{1,2}(?:\.\d+)?)\s+      # longitude seconds
-        ([EW])\s+                   # longitude direction
+        (\d{1,2})[ \t]+                # latitude degrees
+        (\d{1,2})[ \t]+                # latitude minutes
+        (\d{1,2}(?:\.\d+)?)[ \t]+      # latitude seconds
+        ([NS])[ \t]+                   # latitude direction
+        (\d{1,3})[ \t]+                # longitude degrees
+        (\d{1,2})[ \t]+                # longitude minutes
+        (\d{1,2}(?:\.\d+)?)[ \t]+      # longitude seconds
+        ([EW])[ \t]+                   # longitude direction
         (-?\d+(?:\.\d+)?)m          # altitude
-        (?:\s+(\d+(?:\.\d+)?)m      # size (optional)
-        (?:\s+(\d+(?:\.\d+)?)m      # horiz precision (optional)
-        (?:\s+(\d+(?:\.\d+)?)m)?    # vert precision (optional)
+        (?:[ \t]+(\d+(?:\.\d+)?)m      # size (optional)
+        (?:[ \t]+(\d+(?:\.\d+)?)m      # horiz precision (optional)
+        (?:[ \t]+(\d+(?:\.\d+)?)m)?    # vert precision (optional)
         )?)?$/x';
 
 		if (!preg_match($pattern, $input, $matches)) {
@@ -551,7 +551,7 @@ class Validate
 			return false; // SHA-512
 		}
 
-		if ($matchingType === 0 && strlen($data) < 2) {
+		if ($matchingType === 0 && (strlen($data) < 2 || strlen($data) > 4096)) {
 			return false; // at least 1 byte hex
 		}
 

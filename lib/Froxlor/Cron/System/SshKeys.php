@@ -33,6 +33,9 @@ use PDO;
 
 class SshKeys
 {
+	/**
+	 * @throws \Exception
+	 */
 	public static function generateFiles(&$cronlog)
 	{
 		if (intval(Settings::Get('system.allow_customer_shell')) == 0) {
@@ -50,7 +53,8 @@ class SshKeys
 			SELECT `id`, `ssh_pubkey` FROM `" . TABLE_PANEL_USER_SSHKEYS . "` WHERE `ftp_user_id` = :fuid AND `customerid` = :cid
 		");
 		while ($usr = $sel_stmt->fetch(PDO::FETCH_ASSOC)) {
-			$authkeysfile = FileDir::makeCorrectFile($usr['homedir'] . '/.ssh/authorized_keys');
+			$userHomeDir = FileDir::makeCorrectDir($usr['homedir'] . '/.ssh', $usr['homedir']);
+			$authkeysfile = FileDir::makeCorrectFile($userHomeDir . '/authorized_keys', $usr['homedir']);
 			$cronlog->logAction(FroxlorLogger::CRON_ACTION, LOG_NOTICE, 'Creating file ' . $authkeysfile);
 			// remove all entries with 'froxlor:id=...'
 			self::removeFroxlorKeys($authkeysfile, $cronlog);

@@ -118,6 +118,10 @@ class Ftps extends ApiCommand implements ResourceEntity
 
 			if (Settings::Get('system.allow_customer_shell') == '1' && $customer['shell_allowed'] == '1') {
 				$shell = Validate::validate(trim($shell), 'shell', '', '', [], true);
+				$availableshells = explode(',', Settings::Get('system.available_shells'));
+				if (!is_array($availableshells) || empty($availableshells) || !in_array($shell, $availableshells)) {
+					$shell = "/bin/false";
+				}
 			} else {
 				$shell = "/bin/false";
 			}
@@ -438,6 +442,10 @@ class Ftps extends ApiCommand implements ResourceEntity
 
 		if (Settings::Get('system.allow_customer_shell') == '1' && $customer['shell_allowed'] == '1') {
 			$shell = Validate::validate(trim($shell), 'shell', '', '', [], true);
+			$availableshells = explode(',', Settings::Get('system.available_shells'));
+			if (!is_array($availableshells) || empty($availableshells) || !in_array($shell, $availableshells)) {
+				$shell = "/bin/false";
+			}
 		} else {
 			$shell = "/bin/false";
 		}
