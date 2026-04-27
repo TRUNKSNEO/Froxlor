@@ -90,6 +90,14 @@ class Mysqls extends ApiCommand implements ResourceEntity
 
 			// validate whether the dbserver exists
 			$dbserver = Validate::validate($dbserver, html_entity_decode(lng('mysql.mysql_server')), '/^[0-9]+$/', '', 0, true);
+			// enforce per-customer allowed_mysqlserver allowlist
+			if (!$this->isAdmin()) {
+				$allowed = json_decode($customer['allowed_mysqlserver'] ?? '[]', true);
+				if (!is_array($allowed) || empty($allowed)
+					|| !in_array((int)$dbserver, array_map('intval', $allowed), true)) {
+					throw new Exception('You cannot access this resource', 405);
+				}
+			}
 			Database::needRoot(true, $dbserver, false);
 			Database::needSqlData();
 			$sql_root = Database::getSqlData();
